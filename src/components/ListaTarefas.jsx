@@ -16,6 +16,8 @@ function ListaTarefas() {
         const savedTarefas = localStorage.getItem('tarefasOriginais');
         return savedTarefas ? JSON.parse(savedTarefas) : [];
     });
+    const [editando, setEditando] = useState(null); 
+    const [novoTexto, setNovoTexto] = useState(''); 
 
     useEffect(() => {
         localStorage.setItem('tarefas', JSON.stringify(tarefas));
@@ -62,6 +64,21 @@ function ListaTarefas() {
         setOrdenado(!ordenado);
     };
 
+    const iniciarEdicao = (indice, textoAtual) => {
+        setEditando(indice);
+        setNovoTexto(textoAtual);
+    };
+
+    const salvarEdicao = (indice) => {
+        const novasTarefas = tarefas.map((tarefa, i) =>
+            i === indice ? { ...tarefa, texto: novoTexto } : tarefa
+        );
+        setTarefas(novasTarefas);
+        setTarefasOriginais(novasTarefas);
+        setEditando(null);
+        setNovoTexto('');
+    };
+
     return (
         <div>
             <h2>Lista de Tarefas</h2>
@@ -83,9 +100,29 @@ function ListaTarefas() {
                             checked={tarefa.concluida}
                             onChange={() => marcarConcluida(indice)}
                         />
-                        <span style={{ textDecoration: tarefa.concluida ? 'line-through' : 'none' }}>
-                            {tarefa.texto}
-                        </span>
+                        {editando === indice ? (
+                            <>
+                                <input
+                                    type="text"
+                                    value={novoTexto}
+                                    onChange={(e) => setNovoTexto(e.target.value)}
+                                />
+                                <button onClick={() => salvarEdicao(indice)}>Salvar</button>
+                            </>
+                        ) : (
+                            <>
+                                <span
+                                    style={{
+                                        textDecoration: tarefa.concluida ? 'line-through' : 'none',
+                                    }}
+                                >
+                                    {tarefa.texto}
+                                </span>
+                                <button onClick={() => iniciarEdicao(indice, tarefa.texto)}>
+                                    Editar
+                                </button>
+                            </>
+                        )}
                         <button onClick={() => removerTarefa(indice)}>Remover</button>
                     </li>
                 ))}
