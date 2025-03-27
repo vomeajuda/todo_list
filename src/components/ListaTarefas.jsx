@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import './ListaTarefas.css';
+
 function ListaTarefas() {
     const [tarefas, setTarefas] = useState([]);
     const [novaTarefa, setNovaTarefa] = useState('');
