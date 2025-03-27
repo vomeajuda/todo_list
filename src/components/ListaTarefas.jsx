@@ -31,7 +31,7 @@ function ListaTarefas() {
 
     const adicionarTarefa = () => {
         if (novaTarefa.trim() !== '') {
-            const novasTarefas = [...tarefas, novaTarefa];
+            const novasTarefas = [...tarefas, { texto: novaTarefa, concluida: false }];
             setTarefas(novasTarefas);
             setTarefasOriginais(novasTarefas);
             setNovaTarefa('');
@@ -44,11 +44,19 @@ function ListaTarefas() {
         setTarefasOriginais(novasTarefas);
     };
 
+    const marcarConcluida = (indice) => {
+        const novasTarefas = tarefas.map((tarefa, i) =>
+            i === indice ? { ...tarefa, concluida: !tarefa.concluida } : tarefa
+        );
+        setTarefas(novasTarefas);
+        setTarefasOriginais(novasTarefas);
+    };
+
     const ordenarTarefas = () => {
         if (ordenado) {
             setTarefas(tarefasOriginais);
         } else {
-            const tarefasOrdenadas = [...tarefas].sort((a, b) => a.localeCompare(b));
+            const tarefasOrdenadas = [...tarefas].sort((a, b) => a.texto.localeCompare(b.texto));
             setTarefas(tarefasOrdenadas);
         }
         setOrdenado(!ordenado);
@@ -70,7 +78,14 @@ function ListaTarefas() {
             <ul>
                 {tarefas.map((tarefa, indice) => (
                     <li key={indice}>
-                        {tarefa}{' '}
+                        <input
+                            type="checkbox"
+                            checked={tarefa.concluida}
+                            onChange={() => marcarConcluida(indice)}
+                        />
+                        <span style={{ textDecoration: tarefa.concluida ? 'line-through' : 'none' }}>
+                            {tarefa.texto}
+                        </span>
                         <button onClick={() => removerTarefa(indice)}>Remover</button>
                     </li>
                 ))}
