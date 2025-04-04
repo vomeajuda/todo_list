@@ -6,8 +6,8 @@ import './ListaTarefas.css';
 function ListaTarefas() {
     // armazena a lista de tarefas
     const [tarefas, setTarefas] = useState(() => {
-        const savedTarefas = localStorage.getItem('tarefas');
-        return savedTarefas ? JSON.parse(savedTarefas) : []; // converte de string para array
+        const tarefasSalvas = localStorage.getItem('tarefas');
+        return tarefasSalvas ? JSON.parse(tarefasSalvas) : []; // converte de string para array
     });
 
     // armazena o nome da nova tarefa
@@ -15,14 +15,14 @@ function ListaTarefas() {
 
     // controla se as tarefas estão ordenadas ou não
     const [ordenado, setOrdenado] = useState(() => {
-        const savedOrdenado = localStorage.getItem('ordenado');
-        return savedOrdenado ? JSON.parse(savedOrdenado) : false; // converte de string para boolean
+        const ordenadoSalvo = localStorage.getItem('ordenado');
+        return ordenadoSalvo ? JSON.parse(ordenadoSalvo) : false; // converte de string para boolean
     });
 
     // armazena a lista original de tarefas (antes de ordenar)
     const [tarefasOriginais, setTarefasOriginais] = useState(() => {
-        const savedTarefas = localStorage.getItem('tarefasOriginais');
-        return savedTarefas ? JSON.parse(savedTarefas) : [];
+        const tarefasSalvas = localStorage.getItem('tarefasOriginais');
+        return tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
     });
 
     // salva a lista das tarefas no LocalStorage
